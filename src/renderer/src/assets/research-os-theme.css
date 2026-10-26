@@ -1,0 +1,107 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+
+/* Research-os palette. Primitives also follow the chat scheme so status/diff tokens match it. */
+:root,
+.native-chat-appearance[data-native-chat-scheme='light'] {
+  --paper: #f2ede3;
+  --surface: #f8f5ee;
+  --ink: #1c1a16;
+  --muted-ink: #7a7266;
+  --line: #ddd5c6;
+  --accent-rs: #b4532f;
+  --ok: #5b7a4a;
+  --warn: #b8862b;
+  --bad: #9c3a2b;
+}
+
+.dark,
+.native-chat-appearance[data-native-chat-scheme='dark'] {
+  --paper: #161411;
+  --surface: #1d1a16;
+  --ink: #ece5d6;
+  --muted-ink: #978d7e;
+  --line: #2e2922;
+  --accent-rs: #d27650;
+  --ok: #8aa874;
+  --warn: #d4a648;
+  --bad: #d06a55;
+}
+
+:root {
+  color-scheme: light;
+  --app-font-family: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius: 2px;
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 2px;
+  --radius-3xl: 2px;
+  --radius-4xl: 2px;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+/* Chrome roles: identical mapping in both schemes, primitives carry the difference. */
+:root,
+.dark {
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --editor-surface: var(--surface);
+  --primary: var(--accent-rs);
+  --primary-foreground: var(--paper);
+  --secondary: color-mix(in srgb, var(--line) 50%, var(--paper));
+  --secondary-foreground: var(--ink);
+  --muted: color-mix(in srgb, var(--line) 50%, var(--paper));
+  --muted-foreground: var(--muted-ink);
+  --accent: color-mix(in srgb, var(--accent-rs) 12%, var(--surface));
+  --accent-foreground: var(--ink);
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--accent-rs);
+
+  --sidebar: color-mix(in srgb, var(--ink) 3%, var(--paper));
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--accent-rs);
+  --sidebar-primary-foreground: var(--paper);
+  --sidebar-accent: color-mix(in srgb, var(--line) 60%, var(--paper));
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--accent-rs);
+  --worktree-sidebar: color-mix(in srgb, var(--ink) 3%, var(--paper));
+  --worktree-sidebar-foreground: var(--ink);
+  --worktree-sidebar-accent: color-mix(in srgb, var(--line) 60%, var(--paper));
+  --worktree-sidebar-accent-foreground: var(--ink);
+  --worktree-sidebar-border: var(--line);
+  --worktree-sidebar-ring: var(--accent-rs);
+
+  --agent-working: var(--warn);
+  --agent-question: var(--accent-rs);
+  --agent-question-text: color-mix(in srgb, var(--accent-rs) 75%, var(--ink));
+  --workspace-status-review: var(--ok);
+  --workspace-status-progress: var(--warn);
+  --tab-group-split-divider: color-mix(in srgb, var(--muted-ink) 70%, var(--paper));
+  --tab-group-split-divider-strong: var(--muted-ink);
+}
+
+/* Status roles follow the chat scheme like main.css; *-background/-border re-derive from these. */
+:root,
+.dark,
+.native-chat-appearance[data-native-chat-scheme='light'],
+.native-chat-appearance[data-native-chat-scheme='dark'] {
+  --destructive: var(--bad);
+  --destructive-foreground: var(--paper);
+  --status-success: var(--ok);
+  --status-warning: var(--warn);
+  --git-decoration-added: var(--ok);
+  --git-decoration-modified: var(--warn);
+  --git-decoration-deleted: var(--bad);
+}

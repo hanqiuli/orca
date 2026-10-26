@@ -192,5 +192,30 @@ export const POPULAR_DARK_CORE_TERMINAL_THEMES: TerminalThemeMap = {
     brightMagenta: '#6c71c4',
     brightCyan: '#93a1a1',
     brightWhite: '#fdf6e3'
+  },
+
+  'Research OS Dark': {
+    background: '#161411',
+    foreground: '#ece5d6',
+    cursor: '#d27650',
+    cursorAccent: '#161411',
+    selectionBackground: '#3f2a1f',
+    selectionForeground: '#ece5d6',
+    black: '#2e2922',
+    red: '#d06a55',
+    green: '#8aa874',
+    yellow: '#d4a648',
+    blue: '#7d9fc8',
+    magenta: '#c48aae',
+    cyan: '#7fb3aa',
+    white: '#ece5d6',
+    brightBlack: '#978d7e',
+    brightRed: '#d27650',
+    brightGreen: '#a2bf8c',
+    brightYellow: '#e4bb63',
+    brightBlue: '#9bb7da',
+    brightMagenta: '#d6a2c2',
+    brightCyan: '#9cc8c0',
+    brightWhite: '#f8f5ee'
   }
 }

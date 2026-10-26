@@ -199,5 +199,30 @@ export const POPULAR_LIGHT_TERMINAL_THEMES: TerminalThemeMap = {
     brightMagenta: '#df69ba',
     brightCyan: '#35a77c',
     brightWhite: '#fdf6e3'
+  },
+
+  'Research OS Light': {
+    background: '#f2ede3',
+    foreground: '#1c1a16',
+    cursor: '#b4532f',
+    cursorAccent: '#f2ede3',
+    selectionBackground: '#e4cbbb',
+    selectionForeground: '#1c1a16',
+    black: '#1c1a16',
+    red: '#9c3a2b',
+    green: '#5b7a4a',
+    yellow: '#8f6a1f',
+    blue: '#3f6890',
+    magenta: '#8c4a74',
+    cyan: '#3f7d76',
+    white: '#d8d0c1',
+    brightBlack: '#7a7266',
+    brightRed: '#b4532f',
+    brightGreen: '#4a6a3b',
+    brightYellow: '#b8862b',
+    brightBlue: '#2f5880',
+    brightMagenta: '#7a3c64',
+    brightCyan: '#2f6d66',
+    brightWhite: '#f8f5ee'
   }
 }
