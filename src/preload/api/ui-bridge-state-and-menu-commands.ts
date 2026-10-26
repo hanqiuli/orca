@@ -36,6 +36,13 @@ export const uiStateAndMenuCommandsApi = {
   },
   consumePendingSkillShare: (): Promise<string | null> =>
     ipcRenderer.invoke('ui:consumePendingSkillShare'),
+  onOpenResearchOsDeepLink: (callback: (url: string) => void): (() => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, url: string): void => callback(url)
+    ipcRenderer.on('ui:openResearchOsDeepLink', listener)
+    return () => ipcRenderer.removeListener('ui:openResearchOsDeepLink', listener)
+  },
+  consumePendingResearchOsDeepLink: (): Promise<string | null> =>
+    ipcRenderer.invoke('ui:consumePendingResearchOsDeepLink'),
   onOpenMarkdownFiles: (callback: (documents: MarkdownDocument[]) => void): (() => void) => {
     const listener = (_event: Electron.IpcRendererEvent, documents: MarkdownDocument[]): void =>
       callback(documents)

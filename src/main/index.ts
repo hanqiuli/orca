@@ -1,5 +1,6 @@
 import { app, clipboard, dialog, type BrowserWindow } from 'electron'
 import { parseSkillShareId } from '../shared/skill-share-link'
+import { parseResearchOsDeepLink } from '../shared/research-os-deep-link'
 import { createMacAppActivationHandler } from './window/macos-app-activation'
 import { isBackgroundLaunch, isOrcadSidecarLaunch } from './window/foreground-activation-policy'
 import { createDesktopHandoff, desktopHandoffArguments } from './window/macos-desktop-handoff'
@@ -49,6 +50,9 @@ const requestDesktopHandoff = createDesktopHandoff({
 function requestDesktopActivation(argv: readonly string[] = []): void {
   state.skillShareDeepLinks.capture(argv, (shareId) => {
     state.mainWindow?.webContents.send('ui:openSkillShare', shareId)
+  })
+  state.researchOsDeepLinks.capture(argv, (url) => {
+    state.mainWindow?.webContents.send('ui:openResearchOsDeepLink', url)
   })
   state.osOpenedDocuments.capture(argv, publishOsOpenedDocuments)
   // Duplicate serve launches must not activate a desktop on a headless server (#11935).
@@ -104,7 +108,7 @@ const preflightReady = runMainProcessPreflight({
 if (preflightReady) {
   void leaseAppImageGenerationForCurrentProcess()
   app.on('open-url', (event, url) => {
-    if (!parseSkillShareId(url)) {
+    if (!parseSkillShareId(url) && !parseResearchOsDeepLink(url)) {
       return
     }
     event.preventDefault()
@@ -122,6 +126,7 @@ if (preflightReady) {
     }
   })
   state.skillShareDeepLinks.capture(process.argv)
+  state.researchOsDeepLinks.capture(process.argv)
   // The first renderer pulls on mount; nothing listens this early.
   state.osOpenedDocuments.capture(process.argv)
   registerMainProcessIpcHandlers()

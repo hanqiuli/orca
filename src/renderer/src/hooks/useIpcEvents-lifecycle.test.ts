@@ -139,6 +139,7 @@ describe('useIpcEvents App-lifetime lifecycle', () => {
     for (const [subscribe, read] of [
       ['ui.onOpenSettings', 'ui.consumePendingOpenSettings'],
       ['ui.onOpenSkillShare', 'ui.consumePendingSkillShare'],
+      ['ui.onOpenResearchOsDeepLink', 'ui.consumePendingResearchOsDeepLink'],
       ['rateLimits.onUpdate', 'rateLimits.get'],
       ['agentStatus.onSet', 'agentStatus.getSnapshot'],
       ['agentStatus.onClear', 'agentStatus.getSnapshot'],

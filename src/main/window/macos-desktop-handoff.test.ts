@@ -164,10 +164,15 @@ describe('desktopHandoffArguments', () => {
   it('turns the buffered share id into a link the desktop app reads from argv', () => {
     const args = desktopHandoffArguments({
       skillShareDeepLinks: { consume: () => 'abc_123' },
+      researchOsDeepLinks: { consume: () => 'research-os://agent?prompt=hi' },
       osOpenedDocuments: { consume: () => ['/Users/me/notes.md'] }
     })
 
-    expect(args).toEqual(['orca://skills/share/abc_123', '/Users/me/notes.md'])
+    expect(args).toEqual([
+      'orca://skills/share/abc_123',
+      'research-os://agent?prompt=hi',
+      '/Users/me/notes.md'
+    ])
     expect(skillShareIdFromArguments(args)).toBe('abc_123')
   })
 
@@ -175,6 +180,7 @@ describe('desktopHandoffArguments', () => {
     expect(
       desktopHandoffArguments({
         skillShareDeepLinks: { consume: () => null },
+        researchOsDeepLinks: { consume: () => null },
         osOpenedDocuments: { consume: () => [] }
       })
     ).toEqual([])

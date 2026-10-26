@@ -83,6 +83,8 @@ export type UiCommandEventApi = {
   consumePendingOpenSettings: () => Promise<boolean>
   onOpenSkillShare: (callback: (shareId: string) => void) => () => void
   consumePendingSkillShare: () => Promise<string | null>
+  onOpenResearchOsDeepLink: (callback: (url: string) => void) => () => void
+  consumePendingResearchOsDeepLink: () => Promise<string | null>
   /** OS "Open With" Markdown/CSV/TSV documents; the local IPC name is retained. */
   onOpenMarkdownFiles: (callback: (documents: MarkdownDocument[]) => void) => () => void
   consumePendingMarkdownFileOpens: () => Promise<MarkdownDocument[]>
