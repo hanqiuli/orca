@@ -1,5 +1,13 @@
 import React from 'react'
-import { BookOpen, CalendarClock, EyeOff, Files, Search, Smartphone } from 'lucide-react'
+import {
+  BookOpen,
+  CalendarClock,
+  EyeOff,
+  Files,
+  FlaskConical,
+  Search,
+  Smartphone
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/store'
 import { cn } from '@/lib/utils'
@@ -56,6 +64,7 @@ const SidebarNav = React.memo(function SidebarNav() {
   const openMobilePage = useAppStore((s) => s.openMobilePage)
   const openArtifactsPage = useAppStore((s) => s.openArtifactsPage)
   const openSkillsPage = useAppStore((s) => s.openSkillsPage)
+  const openResearchPage = useAppStore((s) => s.openResearchPage)
   const openModal = useAppStore((s) => s.openModal)
   const updateSettings = useAppStore((s) => s.updateSettings)
   const activeView = useAppStore((s) => s.activeView)
@@ -68,6 +77,7 @@ const SidebarNav = React.memo(function SidebarNav() {
   const mobileActive = activeView === 'mobile'
   const artifactsActive = activeView === 'artifacts'
   const skillsActive = activeView === 'skills'
+  const researchActive = activeView === 'research'
   const mobileOnboardingBadge = useMobileSidebarOnboardingBadge(showMobileButton)
   const hideAutomationsButton = React.useCallback(() => {
     void updateSettings({ showAutomationsButton: false })
@@ -116,6 +126,33 @@ const SidebarNav = React.memo(function SidebarNav() {
           ))}
         </span>
       </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            onClick={openResearchPage}
+            aria-current={researchActive ? 'page' : undefined}
+            className={cn(
+              'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[13px] font-medium tracking-tight transition-colors',
+              researchActive
+                ? 'bg-worktree-sidebar-accent text-worktree-sidebar-accent-foreground'
+                : 'text-worktree-sidebar-foreground/60 hover:bg-worktree-sidebar-foreground/8'
+            )}
+          >
+            <FlaskConical
+              className={cn(
+                'size-4 shrink-0',
+                !researchActive && 'text-worktree-sidebar-foreground/30'
+              )}
+              strokeWidth={researchActive ? 2.25 : 1.75}
+            />
+            <span className="flex-1">Research</span>
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="right" sideOffset={6}>
+          Research
+        </TooltipContent>
+      </Tooltip>
       <SetupGuideSidebarEntry />
       <SidebarTaskNavButton />
       {showArtifactsButton ? (

@@ -18,6 +18,7 @@ const mocks = vi.hoisted(() => ({
   openActivityPage: vi.fn(),
   openMobilePage: vi.fn(),
   openArtifactsPage: vi.fn(),
+  openResearchPage: vi.fn(),
   openModal: vi.fn(),
   updateSettings: vi.fn(),
   refreshPreflightStatus: vi.fn(),
@@ -116,7 +117,11 @@ function folderRepo(): Repo {
 }
 
 function setSidebarState({
-  settings = getDefaultSettings('/tmp'),
+  settings = {
+    ...getDefaultSettings('/tmp'),
+    showAutomationsButton: true,
+    showMobileButton: true
+  },
   repos = [gitRepo()]
 }: {
   settings?: GlobalSettings
@@ -131,6 +136,7 @@ function setSidebarState({
     openActivityPage: mocks.openActivityPage,
     openMobilePage: mocks.openMobilePage,
     openArtifactsPage: mocks.openArtifactsPage,
+    openResearchPage: mocks.openResearchPage,
     openModal: mocks.openModal,
     updateSettings: mocks.updateSettings,
     preflightStatus: { glab: { installed: false } },
@@ -263,9 +269,25 @@ describe('SidebarNav', () => {
     expect(idle?.querySelector('svg')).toBeNull()
   })
 
-  it('shows the Mobile entry by default for older settings', () => {
-    expect(shouldShowMobileButton(null)).toBe(true)
-    expect(shouldShowMobileButton({})).toBe(true)
+  it('hides the Mobile entry unless the setting is explicitly on', () => {
+    expect(shouldShowMobileButton(null)).toBe(false)
+    expect(shouldShowMobileButton({})).toBe(false)
+    expect(shouldShowMobileButton({ showMobileButton: true })).toBe(true)
+  })
+
+  it('opens Research from the first nav row below search', async () => {
+    setSidebarState({ settings: getDefaultSettings('/tmp') })
+    const container = await renderSidebarNav()
+    const searchButton = container.querySelector(
+      'button[aria-label="Search worktrees and browser tabs"]'
+    )
+    const researchButton = getButtonByText(container, 'Research')
+
+    expect(searchButton?.nextElementSibling).toBe(researchButton)
+    expect(queryButtonByText(container, 'Automations')).toBeNull()
+    expect(queryButtonByText(container, 'Orca Mobile')).toBeNull()
+    await clickButton(researchButton)
+    expect(mocks.openResearchPage).toHaveBeenCalledOnce()
   })
 
   it('hides the Artifacts entry by default for older settings', () => {
@@ -349,9 +371,10 @@ describe('SidebarNav', () => {
     expect(mocks.openMobilePage).not.toHaveBeenCalled()
   })
 
-  it('shows the Automations entry by default for older settings', () => {
-    expect(shouldShowAutomationsButton(null)).toBe(true)
-    expect(shouldShowAutomationsButton({})).toBe(true)
+  it('hides the Automations entry unless the setting is explicitly on', () => {
+    expect(shouldShowAutomationsButton(null)).toBe(false)
+    expect(shouldShowAutomationsButton({})).toBe(false)
+    expect(shouldShowAutomationsButton({ showAutomationsButton: true })).toBe(true)
   })
 
   it('omits the Automations row when the sidebar setting is off', async () => {
