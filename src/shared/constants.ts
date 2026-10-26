@@ -35,7 +35,7 @@ export {
 } from './worktree/card-properties'
 
 export const SCHEMA_VERSION = 1
-export const DEFAULT_APP_FONT_FAMILY = 'Inter Variable'
+export const DEFAULT_APP_FONT_FAMILY = 'Manrope Variable'
 export const DEFAULT_SHOW_SLEEPING_WORKSPACES = true
 export const DEFAULT_HIDE_SLEEPING_WORKSPACES = false
 export const DEFAULT_AGENT_ACTIVITY_DISPLAY_MODE: AgentActivityDisplayMode = 'compact'
@@ -181,7 +181,7 @@ export function getDefaultUIState(): PersistedUIState {
   return {
     lastActiveRepoId: null,
     lastActiveWorktreeId: null,
-    activeView: 'terminal',
+    activeView: 'research',
     sidebarWidth: 280,
     rightSidebarOpen: true,
     rightSidebarTab: 'explorer',

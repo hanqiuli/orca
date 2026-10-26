@@ -74,7 +74,7 @@ describe('Store', () => {
     expect(settings.sourceControlGroupOrder).toBe('changes-first')
     expect(settings.theme).toBe('system')
     expect(settings.appIcon).toBe('classic')
-    expect(settings.appFontFamily).toBe('Inter Variable')
+    expect(settings.appFontFamily).toBe('Manrope Variable')
     expect(settings.editorAutoSave).toBe(false)
     expect(settings.editorAutoSaveDelayMs).toBe(1000)
     expect(settings.terminalFontSize).toBe(14)

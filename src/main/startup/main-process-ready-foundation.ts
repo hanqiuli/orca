@@ -103,7 +103,7 @@ export async function initializeReadyFoundation(): Promise<void> {
     app.setAppUserModelId(app.isPackaged ? identity.appUserModelId : process.execPath)
   }
   // Post-ready naming preserves packaged Keychain identity; dev already renamed before ready.
-  app.setName(identity.appName)
+  app.setName(identity.isDev ? identity.appName : 'Research OS')
   updateGpuAccelerationAboutPanel()
   if (state.isServeMode) {
     // Profile loading can decrypt and hang; fence unreachable keychains first.

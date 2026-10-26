@@ -124,8 +124,8 @@ describe('createUISlice hydratePersistedUI', () => {
     expect(createUIStore().getState().manualRepoOrder).toEqual([])
   })
 
-  it('defaults the persisted active view to terminal', () => {
-    expect(getDefaultUIState().activeView).toBe('terminal')
+  it('defaults the persisted active view to the research home', () => {
+    expect(getDefaultUIState().activeView).toBe('research')
     expect(createUIStore().getState().activeView).toBe('terminal')
   })
 

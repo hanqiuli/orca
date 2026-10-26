@@ -275,18 +275,18 @@ describe('SidebarNav', () => {
     expect(shouldShowMobileButton({ showMobileButton: true })).toBe(true)
   })
 
-  it('opens Research from the first nav row below search', async () => {
+  it('opens the research home from the first nav row below search', async () => {
     setSidebarState({ settings: getDefaultSettings('/tmp') })
     const container = await renderSidebarNav()
     const searchButton = container.querySelector(
       'button[aria-label="Search worktrees and browser tabs"]'
     )
-    const researchButton = getButtonByText(container, 'Research')
+    const homeButton = getButtonByText(container, 'Home')
 
-    expect(searchButton?.nextElementSibling).toBe(researchButton)
+    expect(searchButton?.nextElementSibling).toBe(homeButton)
     expect(queryButtonByText(container, 'Automations')).toBeNull()
     expect(queryButtonByText(container, 'Orca Mobile')).toBeNull()
-    await clickButton(researchButton)
+    await clickButton(homeButton)
     expect(mocks.openResearchPage).toHaveBeenCalledOnce()
   })
 

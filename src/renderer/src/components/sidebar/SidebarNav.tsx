@@ -1,13 +1,5 @@
 import React from 'react'
-import {
-  BookOpen,
-  CalendarClock,
-  EyeOff,
-  Files,
-  FlaskConical,
-  Search,
-  Smartphone
-} from 'lucide-react'
+import { BookOpen, CalendarClock, EyeOff, Files, House, Search, Smartphone } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/store'
 import { cn } from '@/lib/utils'
@@ -139,18 +131,18 @@ const SidebarNav = React.memo(function SidebarNav() {
                 : 'text-worktree-sidebar-foreground/60 hover:bg-worktree-sidebar-foreground/8'
             )}
           >
-            <FlaskConical
+            <House
               className={cn(
                 'size-4 shrink-0',
                 !researchActive && 'text-worktree-sidebar-foreground/30'
               )}
               strokeWidth={researchActive ? 2.25 : 1.75}
             />
-            <span className="flex-1">Research</span>
+            <span className="flex-1">Home</span>
           </button>
         </TooltipTrigger>
         <TooltipContent side="right" sideOffset={6}>
-          Research
+          Home
         </TooltipContent>
       </Tooltip>
       <SetupGuideSidebarEntry />
