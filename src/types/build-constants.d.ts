@@ -11,3 +11,6 @@ declare const ORCA_DIAGNOSTICS_TOKEN_URL: string | null
 declare const ORCA_BUILD_COMMIT: string
 
 // ORCA_LAYOUT_OWNER is declared and read in one place: src/shared/layout-owner-switch.ts.
+
+// Research OS fork builds set this true; undefined under vitest so upstream updater suites keep their behaviour.
+declare const __RESEARCH_OS_FORK__: boolean | undefined

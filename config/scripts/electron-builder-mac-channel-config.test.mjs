@@ -48,7 +48,7 @@ describe('electron-builder mac channel config', () => {
   it('builds hourly artifacts with the release signing identity', () => {
     withHourlyEnv((config) => {
       expect(config.mac.appId).toBeUndefined()
-      expect(config.appId).toBe('com.stablyai.orca')
+      expect(config.appId).toBe('com.hanqiuli.research-os')
       expect(config.mac.hardenedRuntime).toBe(true)
       expect(config.forceCodeSigning).toBe(true)
     })
@@ -65,34 +65,34 @@ describe('electron-builder mac channel config', () => {
     expect(electronBuilderConfig.mac.notarize).toBe(false)
   })
 
-  // Twenty-four hourly releases would evict stable/RC from main repo’s ten-entry feed.
-  it('publishes hourly builds to the separate hourly repo', () => {
+  // Research OS has no release feed on any channel.
+  it('never publishes, on any channel', () => {
     withHourlyEnv((config) => {
-      expect(config.publish).toMatchObject({ repo: 'orca-hourly', releaseType: 'prerelease' })
+      expect(config.publish).toBeNull()
     })
-    expect(electronBuilderConfig.publish).toMatchObject({
-      repo: 'orca',
-      releaseType: 'draft'
-    })
+    expect(electronBuilderConfig.publish).toBeNull()
   })
 
   it('stamps hourly packages with the hourly version', () => {
     withEnv(
       { ORCA_MAC_HOURLY: '1', ORCA_HOURLY_BUILD_VERSION: '1.4.160-hourly.202607281400' },
       (config) => {
-        expect(config.extraMetadata).toEqual({ version: '1.4.160-hourly.202607281400' })
+        expect(config.extraMetadata).toEqual({
+          productName: 'Research OS',
+          version: '1.4.160-hourly.202607281400'
+        })
       }
     )
   })
 
-  // Adhoc uses same updater, signing and TCC identity as hourly; only destination repo differs.
-  it('builds adhoc artifacts with the release identity and its own repo', () => {
+  // Adhoc uses same updater, signing and TCC identity as hourly.
+  it('builds adhoc artifacts with the release identity and no publish target', () => {
     withAdhocEnv((config) => {
-      expect(config.appId).toBe('com.stablyai.orca')
+      expect(config.appId).toBe('com.hanqiuli.research-os')
       expect(config.mac.hardenedRuntime).toBe(true)
       expect(config.mac.notarize).toBe(true)
       expect(config.forceCodeSigning).toBe(true)
-      expect(config.publish).toMatchObject({ repo: 'orca-adhoc', releaseType: 'prerelease' })
+      expect(config.publish).toBeNull()
     })
   })
 
@@ -100,18 +100,21 @@ describe('electron-builder mac channel config', () => {
     withEnv(
       { ORCA_MAC_ADHOC: '1', ORCA_ADHOC_BUILD_VERSION: '1.4.160-adhoc.20260728140533' },
       (config) => {
-        expect(config.extraMetadata).toEqual({ version: '1.4.160-adhoc.20260728140533' })
+        expect(config.extraMetadata).toEqual({
+          productName: 'Research OS',
+          version: '1.4.160-adhoc.20260728140533'
+        })
       }
     )
   })
 
-  it('builds daily artifacts with the release identity and its own repo', () => {
+  it('builds daily artifacts with the release identity and no publish target', () => {
     withDailyEnv((config) => {
-      expect(config.appId).toBe('com.stablyai.orca')
+      expect(config.appId).toBe('com.hanqiuli.research-os')
       expect(config.mac.hardenedRuntime).toBe(true)
       expect(config.mac.notarize).toBe(true)
       expect(config.forceCodeSigning).toBe(true)
-      expect(config.publish).toMatchObject({ repo: 'orca-daily', releaseType: 'prerelease' })
+      expect(config.publish).toBeNull()
     })
   })
 
@@ -119,7 +122,10 @@ describe('electron-builder mac channel config', () => {
     withEnv(
       { ORCA_MAC_DAILY: '1', ORCA_DAILY_BUILD_VERSION: '1.4.160-daily.202607281300' },
       (config) => {
-        expect(config.extraMetadata).toEqual({ version: '1.4.160-daily.202607281300' })
+        expect(config.extraMetadata).toEqual({
+          productName: 'Research OS',
+          version: '1.4.160-daily.202607281300'
+        })
       }
     )
   })

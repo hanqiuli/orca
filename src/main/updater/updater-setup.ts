@@ -22,6 +22,9 @@ import { UpdaterDownloadInstall } from './updater-download-install'
 import { configureMacShipItScheduling } from './macos-shipit-scheduling'
 import type { PreQuitCleanupFailureMode, UpdateInstallMode } from './updater-state'
 
+// Research OS has no release feed; the upstream feed would install Orca over the fork.
+const IS_RESEARCH_OS_FORK = typeof __RESEARCH_OS_FORK__ !== 'undefined' && __RESEARCH_OS_FORK__
+
 export type UpdaterSetupOptions = {
   getLastUpdateCheckAt?: () => number | null
   onBeforeQuit?: () => void | Promise<void>
@@ -37,10 +40,18 @@ export type UpdaterSetupOptions = {
 
 export class UpdaterSetup extends UpdaterDownloadInstall {
   checkForUpdates(): void {
+    if (IS_RESEARCH_OS_FORK) {
+      this.sendStatus({ state: 'not-available' })
+      return
+    }
     this.checkForUpdatesInBackground()
   }
 
   checkForUpdatesFromMenu(options?: UpdateCheckOptions): void {
+    if (IS_RESEARCH_OS_FORK) {
+      this.sendStatus({ state: 'not-available', userInitiated: true })
+      return
+    }
     super.checkForUpdatesFromMenu(options)
   }
 
@@ -99,6 +110,9 @@ export class UpdaterSetup extends UpdaterDownloadInstall {
     channel: ReleaseChannel,
     options?: ReleaseBuildListOptions
   ): Promise<ReleaseBuild[]> {
+    if (IS_RESEARCH_OS_FORK) {
+      return []
+    }
     return super.listAvailableReleaseBuilds(channel, options)
   }
 
@@ -135,7 +149,7 @@ export class UpdaterSetup extends UpdaterDownloadInstall {
       this.sendErrorStatus(`The server update did not complete: ${serveHandoffFailure}`, true)
     }
 
-    if (!app.isPackaged) {
+    if (!app.isPackaged || IS_RESEARCH_OS_FORK) {
       return
     }
 

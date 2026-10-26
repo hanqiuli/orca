@@ -39,8 +39,7 @@ describe('electron-builder dev-channel identity', () => {
 
     expect(config.win.signtoolOptions.publisherName).toBe('SignPath Foundation')
     expect(config.win.verifyUpdateCodeSignature).toBeUndefined()
-    expect(config.publish.repo).toBe('orca')
-    expect(config.publish.releaseType).toBe('draft')
+    expect(config.publish).toBeNull()
   })
 
   // The whole point of the change: an unsigned build that advertised a
@@ -54,14 +53,11 @@ describe('electron-builder dev-channel identity', () => {
   })
 
   it.each([
-    ['hourly', { ORCA_WIN_HOURLY: '1' }, 'orca-hourly'],
-    ['daily', { ORCA_WIN_DAILY: '1' }, 'orca-daily'],
-    ['adhoc', { ORCA_WIN_ADHOC: '1' }, 'orca-adhoc']
-  ])('publishes %s Windows builds to its own repo as a prerelease', (_channel, env, repo) => {
-    const config = loadConfigWithEnv(env)
-
-    expect(config.publish.repo).toBe(repo)
-    expect(config.publish.releaseType).toBe('prerelease')
+    ['hourly', { ORCA_WIN_HOURLY: '1' }],
+    ['daily', { ORCA_WIN_DAILY: '1' }],
+    ['adhoc', { ORCA_WIN_ADHOC: '1' }]
+  ])('never publishes %s Windows builds', (_channel, env) => {
+    expect(loadConfigWithEnv(env).publish).toBeNull()
   })
 
   // Why: ORCA_MAC_* gates hardened runtime, notarization, and root-level
@@ -82,7 +78,7 @@ describe('electron-builder dev-channel identity', () => {
     })
 
     expect(config.mac.notarize).toBe(true)
-    expect(config.publish.repo).toBe('orca-adhoc')
+    expect(config.publish).toBeNull()
   })
 })
 
