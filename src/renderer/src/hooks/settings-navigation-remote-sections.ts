@@ -1,7 +1,6 @@
 import { getAdvancedPaneSearchEntries } from '@/components/settings/advanced-search'
 import { getDeveloperPermissionsPaneSearchEntries } from '@/components/settings/developer-permissions-search'
 import { getExperimentalPaneSearchEntries } from '@/components/settings/experimental-search'
-import { getPluginsPaneSearchEntries } from '@/components/settings/plugins-search'
 import { getPrivacyPaneSearchEntries } from '@/components/settings/privacy-search'
 import { getRepositoryPaneSearchEntries } from '@/components/settings/repository-search'
 import { buildSettingsProjectList } from '@/components/settings/settings-project-list'
@@ -11,12 +10,10 @@ import type { SettingsNavSection } from '@/lib/settings-navigation-types'
 import { getRepoKindLabel } from '../../../shared/repo-kind'
 import type { Repo } from '../../../shared/repo-types'
 import {
-  Blocks,
   Bug,
   Cable,
   FlaskConical,
   Lock,
-  Server,
   ShieldCheck,
   SlidersHorizontal,
   Wrench
@@ -32,7 +29,8 @@ export function buildRemoteSettingsSections(
     repos,
     projectGrouping
   }: SettingsNavigationBuildOptions,
-  runtimeEnvironmentsSearchEntry: SettingsNavSection['searchEntries'][number],
+  // Remote Orca Servers is hidden in Research OS; callers still pass its search entry.
+  _runtimeEnvironmentsSearchEntry: SettingsNavSection['searchEntries'][number],
   reposById: ReadonlyMap<string, Repo>
 ): SettingsNavSection[] {
   const showDesktopOnlySettings = !isWebClient
@@ -52,19 +50,6 @@ export function buildRemoteSettingsSections(
           }
         ]
       : []),
-    {
-      id: 'servers',
-      title: translate(
-        'auto.hooks.useSettingsNavigationMetadata.de0c2907a1',
-        'Remote Orca Servers'
-      ),
-      description: isWebClient
-        ? 'Connect this browser to a saved Orca server.'
-        : 'Run Orca on another machine and work on it from here.',
-      icon: Server,
-      searchEntries: [runtimeEnvironmentsSearchEntry],
-      group: 'remote'
-    },
     ...(showDesktopOnlySettings && isMac
       ? [
           {
@@ -141,21 +126,6 @@ export function buildRemoteSettingsSections(
       searchEntries: getExperimentalPaneSearchEntries(),
       group: 'experimental'
     },
-    ...(showDesktopOnlySettings
-      ? [
-          {
-            id: 'plugins',
-            title: translate('auto.hooks.useSettingsNavigationMetadata.pluginsTitle', 'Plugins'),
-            description: translate(
-              'auto.hooks.useSettingsNavigationMetadata.pluginsDescription',
-              'Install and manage experimental Orca plugins.'
-            ),
-            icon: Blocks,
-            searchEntries: getPluginsPaneSearchEntries(),
-            group: 'experimental'
-          }
-        ]
-      : []),
     // Collapse host-specific repo rows to one project entry using the same inputs as settings panes.
     ...buildSettingsProjectList(repos, projectGrouping).map((settingsProject) => {
       const { project, representativeRepoId, setups, checkoutLabel } = settingsProject

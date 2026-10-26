@@ -75,17 +75,13 @@ describe('settings navigation metadata', () => {
   })
 
   it('puts AI capability panes at the top on desktop', () => {
-    expect(ids().slice(0, 10)).toEqual([
+    expect(ids().slice(0, 6)).toEqual([
       'agents',
       'accounts',
       'orchestration',
-      'computer-use',
-      'voice',
-      'orca-account',
       'setup-guide',
       'general',
-      'integrations',
-      'mobile'
+      'integrations'
     ])
   })
 
@@ -126,16 +122,15 @@ describe('settings navigation metadata', () => {
     expect(ids({ isWebClient: true, isLinearConnected: true })).toContain('linear')
   })
 
-  it('places Mobile under Set Up instead of its own sidebar group', () => {
-    const sections = buildSettingsNavigationMetadata({
-      isMac: false,
-      isWindows: false,
-      isWebClient: false,
-      repos: [repo]
-    })
-
-    expect(sections.find((section) => section.id === 'mobile')?.group).toBe('setup')
-  })
+  it.each([false, true])(
+    'hides the sections Research OS does not use (web client: %s)',
+    (isWebClient) => {
+      const hiddenIds = ['computer-use', 'voice', 'mobile', 'orca-account', 'servers', 'plugins']
+      for (const isMac of [false, true]) {
+        expect(ids({ isMac, isWebClient }).filter((id) => hiddenIds.includes(id))).toEqual([])
+      }
+    }
+  )
 
   it('places Automations, Artifacts, and Share Skills first under Workflows', () => {
     const sections = buildSettingsNavigationMetadata({
@@ -161,20 +156,6 @@ describe('settings navigation metadata', () => {
     expect(shareSkills).toMatchObject({ group: 'workflows', badge: 'Beta' })
     expect(shareSkills?.searchEntries[0]?.title).toBe('Unlisted skill links')
     expect(workflowIds.slice(0, 3)).toEqual(['automations', 'artifacts', 'share-skills'])
-  })
-
-  it('places the Orca account in Set Up on desktop only', () => {
-    const desktopSections = buildSettingsNavigationMetadata({
-      isMac: false,
-      isWindows: false,
-      isWebClient: false,
-      repos: [repo]
-    })
-    const account = desktopSections.find((section) => section.id === 'orca-account')
-
-    expect(account?.group).toBe('setup')
-    expect(account?.searchEntries[0]?.title).toBe('Orca account')
-    expect(ids({ isWebClient: true })).not.toContain('orca-account')
   })
 
   it('puts web-safe AI capability panes at the top while hiding desktop-only panes', () => {
@@ -203,7 +184,7 @@ describe('settings navigation metadata', () => {
     expect(webIds).not.toContain('computer-use')
     expect(webIds).not.toContain('voice')
     expect(webIds).not.toContain('advanced')
-    expect(webIds).toContain('servers')
+    expect(webIds).not.toContain('servers')
     expect(webIds).toContain('repo-repo-1')
     const floatingWorkspace = webSections.find((section) => section.id === 'floating-workspace')
     expect(floatingWorkspace?.description).toBe('Global terminal and markdown tabs.')
@@ -255,18 +236,6 @@ describe('settings navigation metadata', () => {
     expect(shortcutTitles).not.toContain('New mobile emulator tab')
   })
 
-  it('does not mark installable AI capabilities as beta in the sidebar metadata', () => {
-    const sections = buildSettingsNavigationMetadata({
-      isMac: true,
-      isWindows: false,
-      isWebClient: false,
-      repos: [repo]
-    })
-
-    expect(sections.find((section) => section.id === 'computer-use')?.badge).toBeUndefined()
-    expect(sections.find((section) => section.id === 'voice')?.badge).toBeUndefined()
-  })
-
   it('places Cloud VM under Experimental instead of as a beta sidebar item', () => {
     const sections = buildSettingsNavigationMetadata({
       isMac: false,
@@ -282,20 +251,6 @@ describe('settings navigation metadata', () => {
     expect(sections.map((section) => section.id)).not.toContain('ephemeral-vms')
     expect(experimental?.group).toBe('experimental')
     expect(entry?.targetSectionId).toBe('ephemeral-vms')
-  })
-
-  it('places Plugins under Experimental on desktop and omits it on the web', () => {
-    const desktopSections = buildSettingsNavigationMetadata({
-      isMac: false,
-      isWindows: false,
-      isWebClient: false,
-      repos: [repo]
-    })
-    const desktopIds = desktopSections.map((section) => section.id)
-
-    expect(desktopSections.find((section) => section.id === 'plugins')?.group).toBe('experimental')
-    expect(desktopIds.indexOf('plugins')).toBe(desktopIds.indexOf('experimental') + 1)
-    expect(ids({ isWebClient: true })).not.toContain('plugins')
   })
 
   it('omits Windows project runtime search entries when the active host is unsupported', () => {

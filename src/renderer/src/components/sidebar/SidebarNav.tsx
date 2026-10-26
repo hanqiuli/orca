@@ -27,13 +27,13 @@ import type { GlobalSettings } from '../../../../shared/global-settings-types'
 export function shouldShowMobileButton(
   settings: Partial<Pick<GlobalSettings, 'showMobileButton'>> | null | undefined
 ): boolean {
-  return settings?.showMobileButton !== false
+  return settings?.showMobileButton === true
 }
 
 export function shouldShowAutomationsButton(
   settings: Partial<Pick<GlobalSettings, 'showAutomationsButton'>> | null | undefined
 ): boolean {
-  return settings?.showAutomationsButton !== false
+  return settings?.showAutomationsButton === true
 }
 
 export function shouldShowArtifactsButton(

@@ -146,7 +146,7 @@ export function buildDefaultSettings(args: {
     sourceControlCompareAgainstUpstream: false,
     showTitlebarAppName: true,
     showTasksButton: true,
-    showAutomationsButton: true,
+    showAutomationsButton: false,
     artifactsEnabled: true,
     artifactSharingEnabled: false,
     agentSkillSharingEnabled: false,
@@ -154,7 +154,7 @@ export function buildDefaultSettings(args: {
     orchestrationChatErrorEscalationEnabled: true,
     showArtifactsButton: false,
     showSkillsButton: false,
-    showMobileButton: true,
+    showMobileButton: false,
     showPinnedWorktreesInGroups: false,
     ctrlTabOrderMode: 'mru',
     // Why: Orca-first keeps core shortcuts working from a focused terminal; TUI-ownership users opt in.
